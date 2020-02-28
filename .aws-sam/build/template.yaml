@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'get-posts
+
+  Sample SAM Template for get-posts
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  GetPostsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetPostsFunction
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Events:
+        GetPosts:
+          Type: Api
+          Properties:
+            Path: /posts
+            Method: get
+Outputs:
+  GetPostsApi:
+    Description: API Gateway endpoint URL for Prod stage for GetPosts function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/posts/
+  GetPostsFunction:
+    Description: GetPosts Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - GetPostsFunction
+      - Arn
+  GetPostsFunctionIamRole:
+    Description: Implicit IAM Role created for GetPosts function
+    Value:
+      Fn::GetAtt:
+      - GetPostsFunctionRole
+      - Arn
